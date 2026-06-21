@@ -4,15 +4,12 @@ import { dbService } from '../services/db';
 import { 
   FilePlus, 
   Search, 
-  HelpCircle, 
   ShieldCheck, 
   Trash2, 
   ShieldAlert, 
   PlusCircle, 
   Building2, 
   Check, 
-  Plus, 
-  CornerDownRight, 
   ChevronDown, 
   X,
   Edit
@@ -217,10 +214,10 @@ export default function GrnTab({
     const newSup: Supplier = {
       id: 'sup_' + Date.now(),
       name: quickSupplierName.trim(),
-      gstNumber: quickGstNumber.trim() || undefined,
-      address: quickAddress.trim() || undefined,
-      email: quickEmail.trim() || undefined,
-      contactNumber: quickContactNumber.trim() || undefined,
+      gstNumber: quickGstNumber.trim() || "",
+address: quickAddress.trim() || "",
+email: quickEmail.trim() || "",
+contactNumber: quickContactNumber.trim() || "",
       createdAt: new Date().toISOString()
     };
     await dbService.saveSupplier(newSup);
@@ -306,17 +303,19 @@ export default function GrnTab({
       qty: Number(qty),
       mfgDate,
       expDate,
-      invoiceNo: invoiceNo.trim() || undefined,
-      coaNo: coaNo.trim() || undefined,
+      invoiceNo: invoiceNo.trim() || "",
+      coaNo: coaNo.trim() || "",
+      remarks: remarks.trim() || "",
       warehouseLocation,
       receivedBy,
       qcStatus: existingGrn ? existingGrn.qcStatus : qcStatus,
-      palletNo: targetMaterial.palletNo || undefined,
-      drumNo: targetMaterial.drumNo || undefined,
-      remarks: remarks.trim() || undefined,
+      palletNo: targetMaterial.palletNo || "",
+      drumNo: targetMaterial.drumNo || "",
+      jobworkRefNo: sourceType === 'Jobwork Return'
+  ? jobworkRefNo.trim()
+  : "",
       createdOn: existingGrn ? existingGrn.createdOn : new Date().toISOString(),
-      sourceType,
-      jobworkRefNo: sourceType === 'Jobwork Return' ? jobworkRefNo.trim() : undefined
+      sourceType
     };
 
     onSaveGrn(newGrn);
@@ -939,8 +938,8 @@ export default function GrnTab({
                                   setExpDate(g.expDate);
                                   setInvoiceNo(g.invoiceNo || '');
                                   setCoaNo(g.coaNo || '');
-                                  setWarehouseLocation(g.warehouseLocation);
-                                  setReceivedBy(g.receivedBy);
+                                  setWarehouseLocation(g.warehouseLocation || 'RM Store');
+                                  setReceivedBy(g.receivedBy || '');
                                   setSourceType(g.sourceType || 'Supplier');
                                   setJobworkRefNo(g.jobworkRefNo || '');
                                   setRemarks(g.remarks || '');

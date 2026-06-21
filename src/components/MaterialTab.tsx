@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { Material, MaterialCategory, User } from '../types';
-import { Layers, Plus, Trash2, Search, ArrowDownNarrowWide, ShieldAlert, FileSpreadsheet, Upload, Sliders } from 'lucide-react';
+import { Layers, Plus, Trash2, Search, ShieldAlert } from 'lucide-react';
 
 interface MaterialTabProps {
   materials: Material[];
@@ -15,7 +15,6 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
   const uomsArray = customUoms.split(',').map(u => u.trim().toUpperCase()).filter(Boolean);
 
   // Form state
-  const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState<MaterialCategory>('Raw Material');
   const [uom, setUom] = useState(() => uomsArray[0] || 'KG');
@@ -30,7 +29,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Validation & Save Handler
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
@@ -65,15 +64,14 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
       category,
       uom: uom.trim().toUpperCase(),
       minStock: Number(minStock) || 0,
-      palletNo: palletNo.trim() || undefined,
-      drumNo: drumNo.trim() || undefined,
+      palletNo: palletNo.trim() || "",
+      drumNo: drumNo.trim() || "",
       createdAt: new Date().toISOString()
     };
 
     onSaveMaterial(newMaterial);
     
     // Clear Form & Notify
-    setCode('');
     setName('');
     setMinStock(100);
     setPalletNo('');
@@ -143,7 +141,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                     required
                     placeholder="e.g. 12"
                     value={palletNo}
-                    onChange={(e) => setPalletNo(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPalletNo(e.target.value)}
                     className="w-full text-slate-800 bg-stone-50 border border-stone-200 placeholder-slate-400 focus:bg-white text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition font-mono"
                   />
                 </div>
@@ -157,7 +155,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                     required
                     placeholder="e.g. 11, 12, 13"
                     value={drumNo}
-                    onChange={(e) => setDrumNo(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setDrumNo(e.target.value)}
                     className="w-full text-slate-800 bg-stone-50 border border-stone-200 placeholder-slate-400 focus:bg-white text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition font-mono"
                   />
                 </div>
@@ -172,7 +170,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                   required
                   placeholder="e.g. Sodium Bicarbonate Pure Granular"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                   className="w-full text-slate-800 bg-stone-50 border border-stone-200 placeholder-slate-400 focus:bg-white text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition"
                 />
               </div>
@@ -183,7 +181,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                 </label>
                 <select
                   value={category}
-                  onChange={(e) => setCategory(e.target.value as MaterialCategory)}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value as MaterialCategory)}
                   className="w-full text-slate-800 bg-stone-50 border border-stone-200 text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition"
                 >
                   <option value="Raw Material">Raw Material</option>
@@ -200,7 +198,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                   </label>
                   <select
                     value={uom}
-                    onChange={(e) => setUom(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setUom(e.target.value)}
                     className="w-full text-slate-800 bg-stone-50 border border-stone-200 text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition font-bold"
                   >
                     {uomsArray.map(u => (
@@ -218,7 +216,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                     min="0"
                     placeholder="100"
                     value={minStock === 0 ? '' : minStock}
-                    onChange={(e) => setMinStock(Number(e.target.value))}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(Number(e.target.value))}
                     className="w-full text-slate-800 bg-stone-50 border border-stone-200 placeholder-slate-400 focus:bg-white text-xs p-2.5 outline-none rounded-xl focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] transition"
                   />
                 </div>
@@ -247,7 +245,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
                 type="text"
                 placeholder="Search code or name..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                 className="block w-full pl-9 pr-3 py-2 border border-stone-200 text-xs bg-stone-50 focus:bg-white focus:border-[#6b3e66] focus:ring-1 focus:ring-[#6b3e66] outline-none rounded-xl transition text-slate-800"
               />
             </div>
@@ -255,7 +253,7 @@ export default function MaterialTab({ materials, onSaveMaterial, onDeleteMateria
             <div className="flex gap-2">
               <select
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
                 className="border border-stone-200 text-xs px-3 py-2 outline-none rounded-xl bg-stone-50 focus:bg-white focus:border-[#6b3e66] text-slate-700 font-medium transition"
               >
                 <option value="All">All Categories</option>

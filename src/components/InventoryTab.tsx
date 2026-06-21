@@ -157,7 +157,7 @@ export default function InventoryTab({ grns, materials, outwards, currentUser, o
     releaseDate: 'QC Release Date'
   };
 
-  const moveColumn = (key: keyof VisibleColumns, direction: 'up' | 'down') => {
+  const moveColumn = (key: Exclude<keyof VisibleColumns, 'code'>, direction: 'up' | 'down') => {
     setColumnOrder(prev => {
       const customizableOnly = prev.filter(k => k !== 'code');
       const idx = customizableOnly.indexOf(key);
@@ -980,8 +980,8 @@ export default function InventoryTab({ grns, materials, outwards, currentUser, o
             mfgDate: resolvedMfg,
             expDate: resolvedExp,
             warehouseLocation: rawLocation,
-            palletNo: rawPallet || undefined,
-            drumNo: rawDrum || undefined,
+            palletNo: rawPallet || "",
+            drumNo: rawDrum || "",
             qcStatus: (['Pending', 'Approved', 'Rejected'].includes(rawQc) ? rawQc : 'Approved') as QcStatus,
             createdOn: new Date().toISOString()
           };
