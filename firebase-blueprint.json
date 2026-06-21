@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account for inventory access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique user ID" },
+        "username": { "type": "string", "description": "The unique ID used to login" },
+        "password": { "type": "string", "description": "The password for logging in" },
+        "name": { "type": "string", "description": "Full name of the user" },
+        "role": { "type": "string", "enum": ["Admin", "GRN Operator", "QC Operator", "Viewer"], "description": "User role" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "username", "password", "name", "role", "createdAt"]
+    },
+    "Material": {
+      "title": "Material",
+      "description": "Information about raw materials, PPM, and SPM",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique material token ID" },
+        "materialCode": { "type": "string", "description": "Unique human-readable material code" },
+        "materialName": { "type": "string", "description": "Name of the material" },
+        "category": { "type": "string", "enum": ["Raw Material", "PPM", "SPM"], "description": "Material type Category" },
+        "uom": { "type": "string", "description": "Unit of Measurement" },
+        "minStock": { "type": "number", "description": "Minimum stock level threshold" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "materialCode", "materialName", "category", "uom", "minStock", "createdAt"]
+    },
+    "Grn": {
+      "title": "GRN",
+      "description": "Goods Receipt Note entry containing supplier, batch, quantities, and quality check status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique GRN Entry identifier" },
+        "grnNo": { "type": "string", "description": "Goods Receipt Note number" },
+        "grnDate": { "type": "string", "format": "date", "description": "Date of GRN receipt" },
+        "supplierName": { "type": "string", "description": "Supplier name" },
+        "materialId": { "type": "string", "description": "Referenced material document ID" },
+        "materialName": { "type": "string", "description": "Denormalized material name" },
+        "batchNo": { "type": "string", "description": "Batch or Lot number" },
+        "qty": { "type": "number", "description": "Received quantity" },
+        "mfgDate": { "type": "string", "format": "date", "description": "Manufacturing date" },
+        "expDate": { "type": "string", "format": "date", "description": "Expiration date" },
+        "invoiceNo": { "type": "string", "description": "Invoice number" },
+        "coaNo": { "type": "string", "description": "Certificate of Analysis number" },
+        "warehouseLocation": { "type": "string", "description": "Specific warehouse store location" },
+        "receivedBy": { "type": "string", "description": "Person who received the materials" },
+        "qcStatus": { "type": "string", "enum": ["Pending", "Approved", "Rejected"], "description": "Quality Control checking status" },
+        "qcReleaseDate": { "type": "string", "description": "Date of QC status modification" },
+        "remarks": { "type": "string", "description": "Optional notes or remarks" },
+        "createdOn": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "grnNo", "grnDate", "supplierName", "materialId", "materialName", "batchNo", "qty", "mfgDate", "expDate", "qcStatus", "createdOn"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Registered user credentials and access profiles"
+    },
+    "materials/{materialId}": {
+      "schema": { "$ref": "#/entities/Material" },
+      "description": "Material Master details"
+    },
+    "grn/{grnId}": {
+      "schema": { "$ref": "#/entities/Grn" },
+      "description": "Warehouse GRN history and QC lifecycle tracking"
+    }
+  }
+}
