@@ -1,9 +1,9 @@
 {
-  "apiKey": "",
-  "authDomain": "",
-  "projectId": "",
-  "storageBucket": "",
-  "messagingSenderId": "",
-  "appId": "",
+  "apiKey": "AIzaSyBzWC9OMS8YrulyICLZQl7MQi1nKvqNE-Q",
+  "authDomain": "inventory-manager-c5228.firebaseapp.com",
+  "projectId": "inventory-manager-c5228",
+  "storageBucket": "inventory-manager-c5228.firebasestorage.app",
+  "messagingSenderId": "745478206967",
+  "appId": "1:745478206967:web:da5bd5654f227811a0aaf2",
   "firestoreDatabaseId": "(default)"
 }
